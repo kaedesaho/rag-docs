@@ -9,7 +9,9 @@ pinned: false
 ---
 # RAG Docs QA
 
-A production-quality RAG system for querying LangChain and LlamaIndex documentation.
+A RAG system for querying LangChain and LlamaIndex documentation, built with hybrid search and LLM-as-a-judge evaluation.
+
+**Live demo:** https://kaedesaho-rag-docs.hf.space
 
 ## Architecture
 
@@ -18,6 +20,22 @@ A production-quality RAG system for querying LangChain and LlamaIndex documentat
 - **LLM**: OpenAI `gpt-4o-mini`
 - **Eval Framework**: LLM-as-a-judge scoring relevance, faithfulness, and answer quality
 - **Frontend**: Streamlit
+
+## Eval Results
+
+| Metric | FAISS Only | Hybrid (BM25 + FAISS + RRF) |
+|---|---|---|
+| Relevance | 0.920 | 0.900 |
+| Faithfulness | 0.900 | 0.900 |
+| Answer Quality | 0.910 | 0.800 |
+
+*Evaluated on 10 queries using GPT-4o-mini as judge.*
+
+## Corpus
+
+- LangChain documentation (`langchain-ai/docs`, main branch)
+- LlamaIndex documentation (`run-llama/llama_index`, v0.14.19)
+- ~2,460 documents, ~33,000 chunks after filtering
 
 ## Setup
 ```bash
@@ -28,7 +46,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Add your OpenAI API key:
+Add your OpenAI API key to `.env`:
 OPENAI_API_KEY=your_key_here
 
 ## Usage
@@ -47,19 +65,3 @@ Run evaluation:
 ```bash
 python eval/run_eval.py
 ```
-
-## Eval Results
-
-| Metric | Score |
-|---|---|
-| Relevance | 1.000 |
-| Faithfulness | 1.000 |
-| Answer Quality | 0.960 |
-
-*Evaluated on 5 queries. Baseline vs hybrid comparison in progress.*
-
-## Corpus
-
-- LangChain documentation (langchain-ai/docs, pinned to main)
-- LlamaIndex documentation (run-llama/llama_index, pinned to v0.14.19)
-- ~3,300 documents, ~42,000 chunks
