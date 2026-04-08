@@ -4,7 +4,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 
 
-load_dotenv()
+load_dotenv(override=False)
 client = OpenAI()
 
 def judge_response(query, chunks, answer):

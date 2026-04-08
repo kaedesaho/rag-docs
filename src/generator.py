@@ -2,7 +2,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 
 
-load_dotenv()
+load_dotenv(override=False)
 client = OpenAI()
 
 def generate_answer(query, chunks):
