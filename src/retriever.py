@@ -30,13 +30,13 @@ def reciprocal_rank_fusion(faiss_results, bm25_results, k=60):
     
     for rank, doc in enumerate(bm25_results):
         doc_id = doc.page_content
-        scores[doc_id] = scores.get(doc_id, 0) + 1 / (k + rank + 1)
+        scores[doc_id] = scores.get(doc_id, 0) + 2 / (k + rank + 1)
     
     sorted_ids = sorted(scores, key=scores.get, reverse=True)
     return sorted_ids
 
 
-def hybrid_search(query: str, faiss_index, bm25_index, chunks, top_k=5):
+def hybrid_search(query: str, faiss_index, bm25_index, chunks, top_k=8):
     # FAISS search
     faiss_results = faiss_index.similarity_search(query, k=20)
     
@@ -55,6 +55,8 @@ def hybrid_search(query: str, faiss_index, bm25_index, chunks, top_k=5):
     chunk_map = {chunk.page_content: chunk for chunk in chunks}
     return [chunk_map[doc_id] for doc_id in merged[:top_k] if doc_id in chunk_map]
 
+def faiss_only_search(query: str, faiss_index, chunks, top_k=8):
+    return faiss_index.similarity_search(query, k=top_k)
 
 if __name__ == "__main__":
     print("Loading indexes...")

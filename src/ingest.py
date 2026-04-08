@@ -8,8 +8,17 @@ from langchain_community.vectorstores import FAISS
 from rank_bm25 import BM25Okapi
 
 
-LANGCHAIN_DOCS = Path("data/langchain-docs/src")
-LLAMA_DOCS = Path("data/llama_index/docs")
+LANGCHAIN_DOCS = [
+    Path("data/langchain-docs/src/oss/langchain"),
+    Path("data/langchain-docs/src/oss/langgraph"),
+    Path("data/langchain-docs/src/oss/concepts"),
+    Path("data/langchain-docs/src/oss/python"),
+]
+LLAMA_DOCS = [
+    Path("data/llama_index/docs/src/content/docs/framework"),
+    Path("data/llama_index/docs/examples"),
+    Path("data/llama_index/docs/api_reference/api_reference"),
+]
 
 def load_docs(path):
     loader = DirectoryLoader(
@@ -19,6 +28,7 @@ def load_docs(path):
         loader_kwargs={"autodetect_encoding": True},
         recursive=True,
         show_progress=True,
+        exclude=["**/javascript/**", "**/changelog*", "**/CHANGELOG*"]
     )
     return loader.load()
 
@@ -29,7 +39,8 @@ def chunk_docs(docs):
         chunk_overlap=100,
         separators=["\n\n", "\n", " ", ""]
     )
-    return splitter.split_documents(docs)
+    chunks = splitter.split_documents(docs)
+    return [c for c in chunks if len(c.page_content.strip()) > 100]
 
 
 def build_faiss_index(chunks):
@@ -55,11 +66,15 @@ def save_indexes(faiss_index, bm25_index, chunks):
 
 if __name__ == "__main__":
     print("Loading LangChain docs...")
-    lc_docs = load_docs(LANGCHAIN_DOCS)
+    lc_docs = []
+    for path in LANGCHAIN_DOCS:
+        lc_docs += load_docs(path)
     print(f"Loaded {len(lc_docs)} LangChain documents")
 
     print("Loading LlamaIndex docs...")
-    li_docs = load_docs(LLAMA_DOCS)
+    li_docs = []
+    for path in LLAMA_DOCS:
+        li_docs += load_docs(path)
     print(f"Loaded {len(li_docs)} LlamaIndex documents")
 
     all_docs = lc_docs + li_docs

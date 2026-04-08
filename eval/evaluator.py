@@ -44,6 +44,11 @@ TEST_QUERIES = [
     "How do I split documents in LangChain?",
     "What is LlamaIndex used for?",
     "How do I create a RAG pipeline?",
+    "What embedding models does LangChain support?",
+    "How do I persist a vector store to disk?",
+    "What is the difference between a retriever and a vector store?",
+    "How do I use metadata filtering in LlamaIndex?",
+    "What is a node parser in LlamaIndex?"
 ]
 
 
@@ -67,7 +72,7 @@ def run_eval(retriever_fn, llm_fn):
     avg_faithfulness = sum(r["scores"]["faithfulness"] for r in results) / len(results)
     avg_quality = sum(r["scores"]["answer_quality"] for r in results) / len(results)
     
-    print(f"\n=== EVAL SUMMARY ===")
+    print(f"\n==== EVAL SUMMARY ====")
     print(f"Avg Relevance:    {avg_relevance:.3f}")
     print(f"Avg Faithfulness: {avg_faithfulness:.3f}")
     print(f"Avg Quality:      {avg_quality:.3f}")
