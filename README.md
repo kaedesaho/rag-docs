@@ -1,12 +1,3 @@
----
-title: RAG Docs QA
-emoji: 🔍
-colorFrom: blue
-colorTo: green
-sdk: docker
-app_file: app.py
-pinned: false
----
 # RAG Docs QA
 
 A RAG system for querying LangChain and LlamaIndex documentation, built with hybrid search and LLM-as-a-judge evaluation.
@@ -47,7 +38,9 @@ pip install -r requirements.txt
 ```
 
 Add your OpenAI API key to `.env`:
+```
 OPENAI_API_KEY=your_key_here
+```
 
 ## Usage
 
