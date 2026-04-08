@@ -1,3 +1,11 @@
+---
+title: RAG Docs QA
+emoji: 🔍
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+---
 # RAG Docs QA
 
 A production-quality RAG system for querying LangChain and LlamaIndex documentation.
