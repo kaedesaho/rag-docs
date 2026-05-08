@@ -1,9 +1,11 @@
 import os
 import pickle
+from dotenv import load_dotenv
+load_dotenv()
 from pathlib import Path
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 from rank_bm25 import BM25Okapi
 
@@ -44,9 +46,7 @@ def chunk_docs(docs):
 
 
 def build_faiss_index(chunks):
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2"
-    )
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
     return FAISS.from_documents(chunks, embeddings)
 
 

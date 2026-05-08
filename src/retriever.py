@@ -1,13 +1,11 @@
 import pickle
 from langchain_community.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from rank_bm25 import BM25Okapi
 
 
 def load_indexes():
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2"
-    )
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
     faiss_index = FAISS.load_local(
         "indexes/faiss",
         embeddings,
